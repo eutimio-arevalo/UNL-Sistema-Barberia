@@ -1,0 +1,83 @@
+<%- layout('./layouts/main.ejs') %>
+
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <div class="card mt-4 text-center">
+                <div class="card-header">
+                    <h3>Servicios</h3>
+                </div>
+                <div class="card-body">
+                    <form action="/signin" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="nombre" placeholder="Nombre" class="form-control mt-2" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="descripcion" placeholder="Descripción" class="form-control mt-2"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <select name="disponibilidad" class="form-select mt-2" aria-label="Default select example">
+                                <option selected disabled>Tipo</option>
+                                <option value="1">Corte</option>
+                                <option value="2">Peinado</option>
+                                <option value="2">Tinte</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text mt-2">$</span>
+                                <input type="number" min="3.00" max="10000.00" step="0.01" class="form-control mt-2" aria-label="Amount (to the nearest dollar)">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <img src="https://www.smartplacement.net/hubfs/Imported_Blog_Media/perfil-consultor-exitoso.jpg" width="300" height="350" class="rounded mx-auto d-block" alt="...">
+                            <input type="file" class="mt-2">
+                        </div>
+                        
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-block mt-4">Aceptar</button>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="overflow-auto">
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Tipo</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CR7</td>
+                                <td>Corte de CR7</td>
+                                <td>Corte</td>
+                                <td>5.00</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
+                                    <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button>
+                                    <button type="button" class="btn btn-danger"><i
+                                            class="far fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

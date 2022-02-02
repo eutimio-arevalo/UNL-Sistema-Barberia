@@ -1,0 +1,84 @@
+<%- layout('./layouts/main.ejs') %>
+
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <div class="card mt-4 text-center">
+                <div class="card-header">
+                    <h3>Empleado</h3>
+                </div>
+                <div class="card-body">
+                    <form action="/signin" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="nombre" placeholder="Nombre" class="form-control mt-2">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="apellido" placeholder="Apellido" class="form-control mt-2">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="cedula" minlength="10" maxlength="10" placeholder="Cedula"
+                                class="form-control mt-2">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="usuario" placeholder="Usuario" class="form-control mt-2">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="clave" placeholder="Contaseña" class="form-control mt-2">
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <select name="disponibilidad" class="form-select mt-2" aria-label="Default select example">
+                                <option selected disabled>Disponibilidad</option>
+                                <option value="1">Disponible</option>
+                                <option value="2">No Disponible</option>
+                            </select>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-block mt-4">Aceptar</button>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="overflow-auto">
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellido</th>
+                                <th scope="col">Cedula</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col">Diponiblidad</th>
+                                <th scope="col">Actions</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Eutimio</td>
+                                <td>Arévalo</td>
+                                <td>1106024480</td>
+                                <td>ARVAtimo</td>
+                                <td>Disponbile</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
+                                    <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button>
+                                    <button type="button" class="btn btn-danger"><i
+                                            class="far fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
