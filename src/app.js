@@ -6,6 +6,8 @@ const passport = require('passport');
 const session = require('express-session');
 const flash = require('connect-flash');
 const multer = require('multer');
+const uuid = require('uuid/v4');
+const { format } = require('timeago.js');
 
 //Inicializar
 const app = express();
@@ -25,6 +27,7 @@ app.set('port', process.env.PORT || 3000);
 //Middlewares
 
 app.use(morgan('dev'));
+app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 const storage = multer.diskStorage({
 	destination: path.join(__dirname, 'public/uploads'),
@@ -33,6 +36,8 @@ const storage = multer.diskStorage({
 		cb(null, uuid() + path.extname(file.originalname));
 	}
 });
+app.use(multer({storage}).single('image'));
+
 app.use(session({
 	secret: 'mysecretsession',
 	resave: false,
@@ -48,6 +53,13 @@ app.use((req, res, next) => {
 	app.locals.user = req.user;
 	next();
 });
+
+//
+app.use((req, res, next) =>{
+	app.locals.format = format;
+	next();
+});
+
 
 //Routes
 app.use('/', require('./routes/routes'));

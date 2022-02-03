@@ -39,6 +39,8 @@ passport.use('local-signup', new localStrategy ({
 		newPersona.nacimiento = nacimiento;
 		newPersona.cedula = cedula;
 		newPersona.telefono = telefono;
+		newPersona.urlimage = "https://res.cloudinary.com/djsa7v6bs/image/upload/v1643855173/perfil_pzarxl.jpg";
+		newPersona.public_id = "perfil_pzarxl";
 		newUser.tipo = "Cliente";
 		newUser.email = email;
 		newUser.password = password;
@@ -56,7 +58,6 @@ passport.use('local-signin', new localStrategy ({
 	passReqToCallback: true
 }, async (req, email, password, done) => {
 	const user = await User.findOne({email: email});
-	console.log(user.tipo);
 	if(!user){
 		return done(null, false, req.flash('mensajeLogear', 'Usario no encontrado'));
 	}

@@ -8,7 +8,7 @@ const personaSchema = new Schema({
 	cedula: {type: String, unique:true, required: true},
 	telefono: {type: String, unique:true, required: true},
 	urlimage: {type: String, required:false},
-	
+	public_id: {type: String, required:false},
 	usuario : { type: Schema.Types.ObjectId, ref: 'usuario' , unique:true, required:true}
 });
 
