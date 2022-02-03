@@ -6,7 +6,7 @@ const passport = require('passport');
 const session = require('express-session');
 const flash = require('connect-flash');
 const multer = require('multer');
-const uuid = require('uuid/v4');
+const { v4: uuid } = require('uuid');
 const { format } = require('timeago.js');
 
 //Inicializar
