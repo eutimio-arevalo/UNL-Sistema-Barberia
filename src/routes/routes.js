@@ -15,6 +15,7 @@ const Usuarios = require('../models/user');
 const Personas =require('../models/persona');
 const Servicio = require('../models/servicio');
 const Cita = require('../models/cita');
+const { fstat } = require('fs');
 
 
 //Obtener todos
@@ -204,10 +205,19 @@ router.post('/perfil', isAuthenticated, async (req, res, next) =>{
 	}
 	await persona.save();
 	await usuario.save();
+	await unlink(req.file.path);
 	res.render('perfil', {
 		persona: persona,
 		edad: getEdad(persona.nacimiento)
 	});
+});
+
+router.get('/reservar', isAuthenticated, (req, res, next) =>{
+	res.render('reservar');
+});
+
+router.get('/personalizar', isAuthenticated, (req, res, next) =>{
+	res.render('personalizar');
 });
 
 router.get('/admin/cliente', isAuthenticated, (req, res, next) =>{
