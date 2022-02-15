@@ -3,38 +3,45 @@
     <h1>Reservar</h1>
 
     <form action="/reservar" method="POST">
-        <% for(var i=0; i<7; i++){ %>
-            <div class="card mt-2">
-                <div class="row align-items-center">
-                    <div class="col-1">
-                        <input type="radio" class="btn-check" name="btnradio" id="<%= 'btnradio'+i %>"
-                            autocomplete="off" checked="">
-                        <label class="btn btn-outline-primary" for="<%= 'btnradio'+i %>"></label>
+        <div class="card">
+            <div class="card-header">
+                <h3>Selecciona un Servicio</h3>
+            </div>
+            <div class="card-body">
+                <% for(var i=0; i<7; i++){ %>
+                    <div class="card mt-2">
+                        <div class="row align-items-center">
+                            <div class="col-1">
+                                <input type="radio" class="btn-check" name="btnradio" id="<%= 'radioS'+i %>"
+                                    autocomplete="off" checked="">
+                                <label class="btn btn-outline-primary" for="<%= 'radioS'+i %>"></label>
+                            </div>
+                            <div class="col-2">
+                                <img src="../public/images/perfil.jpg" width="100px" height="100px" alt="img">
+                            </div>
+                            <div class="col-3">
+                                <h2>
+                                    <%= "Titulo" +i %>
+                                </h2>
+                            </div>
+                            <div class="col-4">
+                                <p class="justify-content-md-center">
+                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Unde, animi?
+                                </p>
+                            </div>
+                            <div class="col-1">
+                                <p>
+                                    <%= "$" +((i+1)*2) %>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-2">
-                        <img src="../public/images/perfil.jpg" width="100px" height="100px" alt="img">
-                    </div>
-                    <div class="col-3">
-                        <h2>
-                            <%= "Titulo" +i %>
-                        </h2>
-                    </div>
-                    <div class="col-4">
-                        <p class="justify-content-md-center">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Unde, animi?
-                        </p>
-                    </div>
-                    <div class="col-1">
-                        <p>
-                            <%= "$" +((i+1)*2) %>
-                        </p>
-                    </div>
-                </div>
+
+                    <% } %>
             </div>
 
-            <% } %>
-                <div class="row justify-content-center mb-4">
-                    <div class="text-center">
-                        <button class="btn btn-primary profile-button mt-4" type="submit">Reservar</button>
-                </div>
+        <div class="row justify-content-center mb-4">
+            <div class="text-center">
+                <button class="btn btn-primary profile-button mt-4" type="submit">Reservar</button>
+            </div>
     </form>

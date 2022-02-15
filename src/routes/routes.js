@@ -5,6 +5,11 @@ const { unlink } = require('fs-extra');
 const { cloudinary_keys } = require('../keys');
 const Cloudinary = require('cloudinary');
 
+if (typeof localStorage === "undefined" || localStorage === null) {
+	var LocalStorage = require('node-localstorage').LocalStorage;
+	localStorage = new LocalStorage('./scratch');
+}
+
 Cloudinary.config({
 	cloud_name: cloudinary_keys.cloud_name,
 	api_key: cloudinary_keys.api_key,
@@ -12,8 +17,8 @@ Cloudinary.config({
 });
 
 const Usuarios = require('../models/user');
-const Personas =require('../models/persona');
-const Servicio = require('../models/servicio');
+const Personas = require('../models/persona');
+const Servicios = require('../models/servicio');
 const Cita = require('../models/cita');
 const { fstat } = require('fs');
 
@@ -39,7 +44,7 @@ router.get('/personas/', async (req, res) => {
 
 router.get('/servicio/', async (req, res) => {
 	try {
-		const servicio = await Servicio.find();
+		const servicio = await Servicios.find();
 		res.json(servicio);
 	} catch (err) {
 		res.status(500).json({ message: err.message })
@@ -216,6 +221,10 @@ router.get('/reservar', isAuthenticated, (req, res, next) =>{
 	res.render('reservar');
 });
 
+router.get('/seleccionar-empleado', isAuthenticated, (req, res, next) =>{
+	res.render('seleccionar-empleado');
+});
+
 router.get('/personalizar', isAuthenticated, (req, res, next) =>{
 	res.render('personalizar');
 });
@@ -228,9 +237,34 @@ router.get('/admin/empleado', isAuthenticated,(req, res, next) =>{
 	res.render('admin/empleado');
 });
 
-router.get('/admin/servicio', isAuthenticated,(req, res, next) =>{
-	res.render('admin/servicio');
+router.get('/admin/servicio', isAuthenticated, async(req, res, next) =>{
+	const servicios = await Servicios.find({});
+	res.render('admin/servicio', {
+		listaServicios: servicios
+	});
 });
+
+router.post('/admin/servicio', isAuthenticated, async(req, res, next) =>{
+	const {nombre, descripcion, tipo, precio, image} = req.body;
+	console.log(req.file);
+	console.log(req.body);
+	const newServicio = new Servicios();
+	newServicio.nombre = nombre;
+	newServicio.descripcion = descripcion;
+	newServicio.tipo = tipo;
+	newServicio.precio = precio;
+	const result = await Cloudinary.v2.uploader.upload(req.file.path);
+	newServicio.urlimage = result.url;
+	newServicio.public_id = result.public_id;
+	await newServicio.save();
+	await unlink(req.file.path);
+	const servicios = await Servicios.find({});
+	
+	res.render('admin/servicio', {
+		listaServicios: servicios
+	});
+});
+
 
 function isAuthenticated(req, res, next){
 	if(req.isAuthenticated()){
