@@ -1,43 +1,41 @@
 <%- layout('layouts/main.ejs') %>
 
-    <h1>Reservar</h1>
-
-    <form action="/reservar" method="POST">
-        <div class="card">
+    <form action="/reservar" method="POST" enctype="multipart/form-data">
+        <div class="card mt-4">
             <div class="card-header">
-                <h3>Selecciona un Servicio</h3>
+                <h2>Selecciona un Servicio</h2>
             </div>
             <div class="card-body">
-                <% for(var i=0; i<7; i++){ %>
+                <% ServiciosLista.forEach(function (servicio, i) { %>
                     <div class="card mt-2">
-                        <div class="row align-items-center">
+                        <div class="row align-items-center justify-content-center">
                             <div class="col-1">
                                 <input type="radio" class="btn-check" name="btnradio" id="<%= 'radioS'+i %>"
                                     autocomplete="off" checked="">
                                 <label class="btn btn-outline-primary" for="<%= 'radioS'+i %>"></label>
                             </div>
                             <div class="col-2">
-                                <img src="../public/images/perfil.jpg" width="100px" height="100px" alt="img">
+                                <img src="<%= servicio.urlimage %>" width="100px" height="100px" alt="img">
                             </div>
                             <div class="col-3">
                                 <h2>
-                                    <%= "Titulo" +i %>
+                                    <%= servicio.nombre %>
                                 </h2>
                             </div>
                             <div class="col-4">
                                 <p class="justify-content-md-center">
-                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Unde, animi?
+                                    <b><%= servicio.tipo %>: </b><%= servicio.descripcion %>
                                 </p>
                             </div>
                             <div class="col-1">
                                 <p>
-                                    <%= "$" +((i+1)*2) %>
+                                    <%= "$" + servicio.precio %>
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <% } %>
+                    <% }); %>
             </div>
 
         <div class="row justify-content-center mb-4">

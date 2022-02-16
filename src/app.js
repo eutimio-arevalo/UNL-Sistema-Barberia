@@ -63,7 +63,7 @@ app.use((req, res, next) =>{
 
 //Routes
 app.use('/', require('./routes/routes'));
-
+app.use('/', require('./routes/rest-api'));
 //Inicializar el server
 app.listen(app.get('port'), () =>{
 	console.log('Servidor encendido');

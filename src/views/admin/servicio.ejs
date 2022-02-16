@@ -1,152 +1,164 @@
 <%- layout('./layouts/main.ejs') %>
-    <% if(listaServicios.length > 0){ %>
+    <% if(listaServicios.length> 0){ %>
         <script>
             var lista = '<%- JSON.stringify(listaServicios);  %>'
             sessionStorage.setItem("listaServicios", lista);
         </script>
-    <% }else{ %>
-        <script>
-            sessionStorage.clear();
-        </script>
-    <% } %>
+        <% }else{ %>
+            <script>
+                sessionStorage.clear();
+            </script>
+            <% } %>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <form action="/editar/servicio" method="POST" enctype="multipart/form-data">
+                                    <input id="modalPosicion" type="hidden" name="posicion" >
+                                    <div class="form-group">
+                                        <input id="modalNombre" type="text" name="nombre" placeholder="Nombre"
+                                            class="form-control mt-2" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="modalDescripcion" type="text" name="descripcion"
+                                            maxlength="500" placeholder="Descripción" class="form-control mt-2"
+                                            required>
+                                    </div>
+                                    <div class="form-group">
+                                        <select id="modalTipo" name="tipo" class="form-select mt-2"
+                                            aria-label="Default select example" required>
+                                            <option value="Corte">Corte</option>
+                                            <option value="Peinado">Peinado</option>
+                                            <option value="Tinte">Tinte</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text mt-2">$</span>
+                                            <input id="modalPrecio" type="number" name="precio" min="3.00" max="100.00"
+                                                step="0.01" class="form-control mt-2"
+                                                aria-label="Amount (to the nearest dollar)">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <img id="modalImg" src="#" width="150" height="200"
+                                            class="rounded mx-auto d-block" alt="Preview">
+                                        <label for="mformFile" class="form-label mt-4">Selecciona una imagen para
+                                            servicio</label>
+                                        <input type="file" id="mformFile" name="image" class="form-control">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success"
+                                            data-bs-dismiss="modal">Actualizar</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body text-center">
-                    <form action="/admin/servicio" method="POST" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <input id="modalNombre" type="text" name="nombre" placeholder="Nombre" class="form-control mt-2" required>
-                        </div>
-                        <div class="form-group">
-                            <input id="modalDescripcion" type="text" name="descripcion" minlength="200" maxlength="500"
-                                placeholder="Descripción" class="form-control mt-2" required>
-                        </div>
-                        <div class="form-group">
-                            <select id="modalTipo" name="tipo" class="form-select mt-2" aria-label="Default select example" required>
-                                <option value="Corte">Corte</option>
-                                <option value="Peinado">Peinado</option>
-                                <option value="Tinte">Tinte</option>
-                            </select>
-                        </div>
+                <div class="row">
+                    <div class="col-md-4 offset-md-4">
+                        <div class="card mt-4 text-center">
+                            <div class="card-header">
+                                <h3>Servicios</h3>
+                            </div>
+                            <div class="card-body">
+                                <form action="/admin/servicio" method="POST" enctype="multipart/form-data">
+                                    
+                                    <div class="form-group">
+                                        <input type="text" name="nombre" placeholder="Nombre" class="form-control mt-2"
+                                            required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="descripcion" maxlength="500"
+                                            placeholder="Descripción" class="form-control mt-2" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <select name="tipo" class="form-select mt-2" aria-label="Default select example"
+                                            required>
+                                            <option value="Corte">Corte</option>
+                                            <option value="Peinado">Peinado</option>
+                                            <option value="Tinte">Tinte</option>
+                                        </select>
+                                    </div>
 
-                        <div class="form-group">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text mt-2">$</span>
-                                <input id="modalPrecio" type="number" name="precio" min="3.00" max="100.00" step="0.01"
-                                    class="form-control mt-2" aria-label="Amount (to the nearest dollar)">
+                                    <div class="form-group">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text mt-2">$</span>
+                                            <input type="number" name="precio" min="3.00" max="100.00" step="0.01"
+                                                class="form-control mt-2" aria-label="Amount (to the nearest dollar)">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <img src="#" id="preview" width="300" height="350"
+                                            class="rounded mx-auto d-block" alt="Preview">
+                                        <label for="formFile" class="form-label mt-4">Selecciona una imagen para
+                                            servicio</label>
+                                        <input type="file" id="formFile" name="image" class="form-control">
+                                    </div>
+
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary btn-block mt-4">Aceptar</button>
+                                    </div>
+
+
+                                </form>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <img id="modalImg" src="#" id="preview" width="150" height="200" class="rounded mx-auto d-block"
-                                alt="Preview">
-                            <label for="formFile" class="form-label mt-4">Selecciona una imagen para servicio</label>
-                            <input type="file" id="formFile" name="image" class="form-control">
-                        </div>
 
-                    </form>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Actualizar</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 offset-md-4">
-            <div class="card mt-4 text-center">
-                <div class="card-header">
-                    <h3>Servicios</h3>
-                </div>
-                <div class="card-body">
-                    <form action="/admin/servicio" method="POST" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <input type="text" name="nombre" placeholder="Nombre" class="form-control mt-2" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="descripcion" minlength="200" maxlength="500"
-                                placeholder="Descripción" class="form-control mt-2" required>
-                        </div>
-                        <div class="form-group">
-                            <select name="tipo" class="form-select mt-2" aria-label="Default select example" required>
-                                <option value="Corte">Corte</option>
-                                <option value="Peinado">Peinado</option>
-                                <option value="Tinte">Tinte</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text mt-2">$</span>
-                                <input type="number" name="precio" min="3.00" max="100.00" step="0.01"
-                                    class="form-control mt-2" aria-label="Amount (to the nearest dollar)">
+                <div class="overflow-auto">
+                    <div class="container mt-4">
+                        <div class="row">
+                            <div class="col-12">
+                                <table class="table table-sm text-center">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">Descripción</th>
+                                            <th scope="col">Tipo</th>
+                                            <th scope="col">Precio</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% listaServicios.forEach(servicio=> { %>
+                                            <tr>
+                                                <td>
+                                                    <%= servicio.nombre %>
+                                                </td>
+                                                <td>
+                                                    <%= servicio.descripcion %>
+                                                </td>
+                                                <td>
+                                                    <%= servicio.tipo %>
+                                                </td>
+                                                <td>
+                                                    <%= servicio.precio %>
+                                                </td>
+                                                <td>
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal"><i class="far fa-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <% }); %>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <img src="#" id="preview" width="300" height="350" class="rounded mx-auto d-block"
-                                alt="Preview">
-                            <label for="formFile" class="form-label mt-4">Selecciona una imagen para servicio</label>
-                            <input type="file" id="formFile" name="image" class="form-control">
-                        </div>
-
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-block mt-4">Aceptar</button>
-                        </div>
-
-
-                    </form>
+                    </div>
                 </div>
-            </div>
-
-        </div>
-    </div>
-    <div class="overflow-auto">
-        <div class="container mt-4">
-            <div class="row">
-                <div class="col-12">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Descripción</th>
-                                <th scope="col">Tipo</th>
-                                <th scope="col">Precio</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% listaServicios.forEach(servicio=> { %>
-                                <tr>
-                                    <td>
-                                        <%= servicio.nombre %>
-                                    </td>
-                                    <td>
-                                        <%= servicio.descripcion %>
-                                    </td>
-                                    <td>
-                                        <%= servicio.tipo %>
-                                    </td>
-                                    <td>
-                                        <%= servicio.precio %>
-                                    </td>
-                                    <td>
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal"><i class="far fa-eye"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <% }); %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="../public/javascript/preview.js"></script>
-    <script src="../public/javascript/admin.js"></script>
+                <script src="../public/javascript/preview.js"></script>
+                <script src="../public/javascript/admin.js"></script>

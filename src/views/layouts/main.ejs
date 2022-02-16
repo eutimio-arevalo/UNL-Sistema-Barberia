@@ -33,7 +33,7 @@
             <li class="nav-item">
               <a class="nav-link" href="../register">Registrarse</a>
             </li>
-            <% }else if(user && user.tipo=="Cliente"){ %>
+            <% }else if(user && user.tipo=="Cliente" ){ %>
               <li class="nav-item">
                 <a class="nav-link" href="../perfil">Perfil</a>
               </li>
@@ -46,23 +46,26 @@
               <li class="nav-item">
                 <a class="nav-link" href="../logout">Salir</a>
               </li>
-            <% }else{%>
-            <li class="nav-item">
-              <a class="nav-link" href="../admin/cliente">Clientes</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../admin/empleado">Empleados</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../admin/servicio">Servicios</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../admin/cita">Citas</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../logout">Salir</a>
-            </li>
-            <% } %>
+              <% }else{%>
+                <li class="nav-item">
+                  <a class="nav-link" href="../perfil">Perfil</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../admin/cliente">Clientes</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../admin/empleado">Empleados</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../admin/servicio">Servicios</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../admin/cita">Citas</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../logout">Salir</a>
+                </li>
+                <% } %>
         </ul>
       </div>
     </div>
@@ -70,13 +73,17 @@
 
   <div class="container">
     <% if (mensajeLogear.length> 0){ %>
-      <div class="alert alert-danger"> <%= mensajeLogear %> </div>
-    <% } %>
-    <% if (mensajeRegistrar.length> 0){ %>
-      <div class="alert alert-danger"> <%= mensajeRegistrar %> </div>
-    <% } %>
+      <div class="alert alert-danger">
+        <%= mensajeLogear %>
+      </div>
+      <% } %>
+        <% if (mensajeRegistrar.length> 0){ %>
+          <div class="alert alert-danger">
+            <%= mensajeRegistrar %>
+          </div>
+          <% } %>
 
-    <%- body %>
+            <%- body %>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
