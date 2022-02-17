@@ -1,7 +1,84 @@
 <%- layout('./layouts/main.ejs') %>
 
+    <% if(listaPersonas.length> 0){ %>
+        <script>
+            var empleados = '<%- JSON.stringify(listaPersonas);  %>'
+            var usuarios = '<%- JSON.stringify(listaUsers);  %>'
+            sessionStorage.setItem("listaEmpleados", empleados);
+            sessionStorage.setItem("listaUsuarios", usuarios);
+        </script>
+    <% }else{ %>
+            <script>
+                sessionStorage.clear();
+            </script>
+    <% } %>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar Empleado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <form action="/editar/empleado" method="POST" enctype="multipart/form-data" autocomplete="off">
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                    <input type="hidden" id="modalPosicion">
+                                        <input id="modalNombre" type="text" name="nombre" placeholder="Nombre" class="form-control"
+                                            required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="modalApellido" type="text" name="apellido" placeholder="Apellido"
+                                            class="form-control mt-2" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="modalNacimiento" type="Date" name="nacimiento" placeholder="Fecha de Nacimiento"
+                                            class="form-control mt-2" min="1922-01-01" max="2010-12-31" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="modalCedula" type="text" name="cedula" minlength="10" maxlength="10"
+                                            placeholder="Cedula" class="form-control mt-2" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="modalTelefono" type="text" name="telefono" placeholder="Telefono Movil"
+                                            class="form-control mt-2" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="modalEmail" type="email" name="email" placeholder="Email" class="form-control mt-2"
+                                            required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="modalPassword" type="text" name="password" placeholder="Contaseña"
+                                            class="form-control mt-2" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <img src="#" id="modalImg" width="250" height="290" class="rounded mx-auto d-block mt-2"
+                                        alt="Preview">
+                                        <input type="file" id="formFile" name="image" class="form-control mt-2">
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-block mt-4">Aceptar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
     <div class="container mt-4">
-        <form action="/admin/empleado" method="POST" enctype="multipart/form-data">
+        <form action="/admin/empleado" method="POST" enctype="multipart/form-data" autocomplete="off">
             <div class="card">
                 <div class="card-header">
                     <h4>Registrar Empleado</h4>
@@ -10,81 +87,107 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
-                                <input type="text" name="nombre" placeholder="Nombre" class="form-control mt-2" required>
+                                <input type="text" name="nombre" placeholder="Nombre" class="form-control mt-2"
+                                    required>
                             </div>
                             <div class="form-group">
-                                <input type="text" name="apellido" placeholder="Apellido" class="form-control mt-2" required>
+                                <input type="text" name="apellido" placeholder="Apellido" class="form-control mt-2"
+                                    required>
                             </div>
                             <div class="form-group">
-                                <input type="Date" name="nacimiento" placeholder="Fecha de Nacimiento" class="form-control mt-2"
-                                    min="1922-01-01" max="2010-12-31" required>
+                                <input type="Date" name="nacimiento" placeholder="Fecha de Nacimiento"
+                                    class="form-control mt-2" min="1922-01-01" max="2010-12-31" required>
                             </div>
                             <div class="form-group">
                                 <input type="text" name="cedula" minlength="10" maxlength="10" placeholder="Cedula"
                                     class="form-control mt-2" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" name="telefono" placeholder="Telefono Movil" class="form-control mt-2"
-                                    required>
+                                <input type="text" name="telefono" placeholder="Telefono Movil"
+                                    class="form-control mt-2" required>
                             </div>
                             <div class="form-group">
                                 <input type="email" name="email" placeholder="Email" class="form-control mt-2" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" name="password" placeholder="Contaseña" class="form-control mt-2" required>
+                                <input type="text" name="password" placeholder="Contaseña" class="form-control mt-2"
+                                    required>
                             </div>
-    
-    
+
+
                         </div>
                         <div class="col-6 text-center">
-    
-                            <img src="#" id="preview" width="250" height="290" class="rounded mx-auto d-block" alt="Preview">
-                            <label for="formFile" class="form-label mt-4">Selecciona una imagen para servicio</label>
+
+                            <img src="#" id="preview" width="250" height="290" class="rounded mx-auto d-block"
+                                alt="Preview">
+                            <label for="formFile" class="form-label mt-4">Selecciona una foto para
+                                un empleado</label>
                             <input type="file" id="formFile" name="image" class="form-control">
                         </div>
                     </div>
-    
+
                     <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-block mt-4">Aceptar</button>
+                        <button type="submit" class="btn btn-primary btn-block mt-4">Aceptar</button>
                     </div>
                 </div>
             </div>
         </form>
     </div>
 
-    <div class="overflow-auto">
-        <div class="container mt-4">
-            <div class="row">
-                <div class="col-12">
-                    <table class="table table-bordered">
-                        <thead>
+    <div data-bs-spy="scroll" data-bs-offset="0" class="scrollspy-example">
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-sm text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Apellido</th>
+                            <th scope="col">Cedula</th>
+                            <th scope="col">Telefono</th>
+                            <th scope="col">Usuario</th>
+                            <th scope="col">Editar</th>
+                            <th scope="col">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% listaPersonas.forEach(function (empleado, i) { %>
                             <tr>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Apellido</th>
-                                <th scope="col">Cedula</th>
-                                <th scope="col">Telefono</th>
-                                <th scope="col">Usuario</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% listaPersonas.forEach(function (empleado, i) { %>
-                            <tr>
-                                
-                                <td><%= empleado.nombre %></td>
-                                <td><%= empleado.apellido %></td>
-                                <td><%= empleado.cedula %></td>
-                                <td><%= empleado.telefono %></td>
-                                <td><%= listaUsers[i].email %></td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
+
+                                <td>
+                                    <%= empleado.nombre %>
                                 </td>
-                                
+                                <td>
+                                    <%= empleado.apellido %>
+                                </td>
+                                <td>
+                                    <%= empleado.cedula %>
+                                </td>
+                                <td>
+                                    <%= empleado.telefono %>
+                                </td>
+                                <td>
+                                    <%= listaUsers[i].email %>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal"><i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                                <td class="text-center">
+                                    <form action="/eliminar/empleado" method="POST" autocomplete="off">
+
+                                        <input type="hidden" value="<%= i %>" name="posicion">
+                                        <button type="submit" class="btn btn-danger"><i
+                                                class="far fa-trash-alt"></i></button>
+                                    </form>
+                                </td>
+
                             </tr>
                             <% }); %>
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+
+    <script src="../../public/javascript/adminEmpleado.js"></script>

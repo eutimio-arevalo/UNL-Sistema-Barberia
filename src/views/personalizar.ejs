@@ -1,50 +1,37 @@
 <%- layout('layouts/main.ejs') %>
 
-<div class="row">
-    <div class="col-md-4 offset-md-4">
+<div class="row align-items-center justify-content-center">
+    <div class="col-md-6">
         <div class="card mt-4 text-center">
             <div class="card-header">
                 <h3>Personalizar Servicio</h3>
             </div>
             <div class="card-body">
-                <form action="/signin" method="POST">
+                <form action="/personalizar" method="POST" enctype="multipart/form-data" autocomplete="off">
                     <div class="form-group">
-                        <input type="text" name="nombre" placeholder="Nombre" class="form-control mt-2" required>
+                        <input type="text" name="nombre" placeholder="Ingrese un Nombre a su servicio" class="form-control mt-2" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" name="descripcion" placeholder="Descripción" class="form-control mt-2"
-                            required>
+                        <textarea class="form-control mt-2" name="descripcion" placeholder="Ingrese una Descripción de su servicio" rows="3" required></textarea>
                     </div>
                     <div class="form-group">
-                        <select name="disponibilidad" class="form-select mt-2" aria-label="Default select example">
-                            <option selected disabled>Tipo</option>
-                            <option value="1">Corte</option>
-                            <option value="2">Peinado</option>
-                            <option value="2">Tinte</option>
-                        </select>
+                        <img src="../public/images/waiting.gif" width="350" height="250" id="preview"
+                            class="rounded mx-auto d-block mt-4" alt="Preview">
+                        <label for="formFile" class="form-label mt-4">
+                            Selecciona una imagen para
+                            servicio
+                        </label>
+                        <input type="file" id="formFile" name="image" class="form-control" required>
                     </div>
-
-                    <div class="form-group">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text mt-2">$</span>
-                            <input type="number" min="3.00" max="10000.00" step="0.01" class="form-control mt-2" aria-label="Amount (to the nearest dollar)">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <img src="https://www.smartplacement.net/hubfs/Imported_Blog_Media/perfil-consultor-exitoso.jpg" width="300" height="350" class="rounded mx-auto d-block" alt="...">
-                        <input type="file" class="mt-2">
-                    </div>
-                    
-
+    
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary btn-block mt-4">Aceptar</button>
                     </div>
-
-
                 </form>
             </div>
         </div>
 
     </div>
 </div>
+
+<script src="../public/javascript/preview.js"></script>

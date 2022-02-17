@@ -1,6 +1,7 @@
-const { Schema, model } = require('mongoose')
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
-const Trabajo = model('Trabajo', {
+const trabajoSchema = new Schema({
 	descripcion: {type: String, maxlength:500, unique:true, required: true},
 	urlimage: {type: String, required:false},
 	public_id: {type: String, required:false}
@@ -8,4 +9,4 @@ const Trabajo = model('Trabajo', {
 })
 
 
-module.exports = Trabajo
+module.exports = mongoose.model('trabajo', trabajoSchema);

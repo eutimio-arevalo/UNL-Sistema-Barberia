@@ -1,17 +1,17 @@
 <%- layout('layouts/main.ejs') %>
 
-    <form action="/reservar" method="POST" enctype="multipart/form-data">
+    <form action="/reservar" method="POST">
         <div class="card mt-4">
             <div class="card-header">
                 <h2>Selecciona un Servicio</h2>
             </div>
-            <div class="card-body">
+            <div class="card-body text-center">
                 <% ServiciosLista.forEach(function (servicio, i) { %>
                     <div class="card mt-2">
                         <div class="row align-items-center justify-content-center">
                             <div class="col-1">
-                                <input type="radio" class="btn-check" name="btnradio" id="<%= 'radioS'+i %>"
-                                    autocomplete="off" checked="">
+                                <input type="radio" class="btn-check" name="btnRadio" id="<%= 'radioS'+i %>"
+                                    autocomplete="off" checked="checked" value="<%= i %>">
                                 <label class="btn btn-outline-primary" for="<%= 'radioS'+i %>"></label>
                             </div>
                             <div class="col-2">
@@ -24,7 +24,7 @@
                             </div>
                             <div class="col-4">
                                 <p class="justify-content-md-center">
-                                    <b><%= servicio.tipo %>: </b><%= servicio.descripcion %>
+                                    <%= servicio.descripcion %>
                                 </p>
                             </div>
                             <div class="col-1">
