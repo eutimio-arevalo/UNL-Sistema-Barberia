@@ -146,12 +146,17 @@ router.post('/reservar', isAuthenticated, async (req, res, next) => {
 	});
 	const personaEmpleados = await Personas.find({ usuario: { $in: ids } });
 	localStorage.setItem("selServicio", JSON.stringify(servicios[parseInt(btnRadio)]));
+
+	const citas = await Citas.find({});
+
 	res.render('seleccionar-empleado', {
 		userEmpleados: userEmpleados,
 		personaEmpleados: personaEmpleados,
-		selServicios: servicios[parseInt(btnRadio)]
+		selServicios: servicios[parseInt(btnRadio)],
+		listaCitas: citas
 	});
 });
+
 
 router.post('/seleccionar-empleado', isAuthenticated, async (req, res, next) => {
 
@@ -168,13 +173,14 @@ router.post('/seleccionar-empleado', isAuthenticated, async (req, res, next) => 
 	newCita.fechaCita = fecha;
 	newCita.horaCita = hora;
 	newCita.estado = "Pendiente";
-	const cliente = await Personas.findOne({ usuario: req.user._id });
-	console.log(cliente);
+	const user = req.user._id;
+	const cliente = await Personas.findOne({ usuario: user });
 	newCita.cliente = cliente._id;
 	newCita.servicio = servicio._id;
 	newCita.empleado = personaEmpleados[parseInt(btnradio)]._id;
-	newCita.save();
-	res.render('home');
+	await newCita.save();
+
+	res.redirect('home');
 });
 
 
@@ -201,13 +207,16 @@ router.post('/personalizar', isAuthenticated, async (req, res, next) => {
 		ids.push(auxi._id);
 	});
 
+	const citas = await Citas.find({});
+
 	const personaEmpleados = await Personas.find({ usuario: { $in: ids } });
 	localStorage.setItem("selServicio", JSON.stringify(servicios));
 	console.log(servicios)
 	res.render('seleccionar-empleado', {
 		userEmpleados: userEmpleados,
 		personaEmpleados: personaEmpleados,
-		selServicios: servicios
+		selServicios: servicios,
+		listaCitas: citas
 	});
 });
 

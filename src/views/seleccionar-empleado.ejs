@@ -1,5 +1,18 @@
 <%- layout('layouts/main.ejs') %>
 
+    <% if(listaCitas.length> 0){ %>
+        <script>
+            var lista = '<%- JSON.stringify(listaCitas);  %>'
+            var listaEmpleados = '<%- JSON.stringify(personaEmpleados);  %>'
+            sessionStorage.setItem("listaCitas", lista);
+            sessionStorage.setItem("listaEmpleados", listaEmpleados);
+        </script>
+    <% }else{ %>
+        <script>
+            sessionStorage.clear();
+        </script>
+    <% } %>
+
     <form action="/seleccionar-empleado" method="POST">
         <div class="card mt-2">
             <div class="card-header">
@@ -11,7 +24,7 @@
                         <div class="row text-center align-items-center">
                             <div class="col-1">
                                 <input type="radio" class="btn-check" name="btnradio" id="<%= 'radioS'+i %>"
-                                    autocomplete="off" checked="" value="<%= i %>" required>
+                                    autocomplete="off" checked value="<%= i %>" required>
                                 <label class="btn btn-outline-primary" for="<%= 'radioS'+i %>"></label>
                             </div>
                             <div class="col-2">
@@ -45,9 +58,9 @@
                     <div class="col">
                         <label for="selFecha">Seleccionar Fecha</label>
                         <input class="form-control" type="date" id="selFecha" name="fecha" min="" max="" required>
-                        <script>
+                        <!-- <script>
                             var today = new Date();
-                            var dd = today.getDate();
+                            var dd = today.getDate()+1;
                             var mm = today.getMonth() + 1; //January is 0!
                             var yyyy = today.getFullYear();
 
@@ -61,23 +74,13 @@
 
                             today = yyyy + '-' + mm + '-' + dd;
                             document.getElementById("selFecha").setAttribute("min", today);
-                        </script>
+                        </script> -->
                     </div>
 
                     <div class="col">
                         <label for="selHora">Seleccionar Hora</label>
                         <select id="selHora" name="hora" class="form-select mt-2" aria-label="Default select example"
                             required>
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                            <option value="13:00">13:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
                         </select>
                     </div>
                     <input type="hidden" name="servicio" value="<%= selServicios %>">
@@ -89,3 +92,5 @@
                 <button class="btn btn-primary profile-button mt-4" type="submit">Reservar</button>
             </div>
     </form>
+
+    <script src="../public/javascript/adminFechas.js"></script>
