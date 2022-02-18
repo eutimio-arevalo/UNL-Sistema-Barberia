@@ -6,7 +6,7 @@ const Citas = require('../models/cita');
 
 
 //Obtener todos
-router.get('/users/', async (req, res) => {
+router.get('rest-api/usuarios/', async (req, res) => {
 	try {
 		const usuarios = await Usuarios.find();
 		res.json(usuarios);
@@ -15,7 +15,7 @@ router.get('/users/', async (req, res) => {
 	}
 });
 
-router.get('/personas/', async (req, res) => {
+router.get('rest-api/personas/', async (req, res) => {
 	try {
 		const usuarios = await Personas.find();
 		res.json(usuarios);
@@ -24,7 +24,7 @@ router.get('/personas/', async (req, res) => {
 	}
 });
 
-router.get('/clientes/', async (req, res) => {
+router.get('rest-api/personas/clientes/', async (req, res) => {
 	try {
 		const usuarios = await Usuarios.find({ tipo: "Cliente" });
 		const ids = [];
@@ -38,7 +38,7 @@ router.get('/clientes/', async (req, res) => {
 	}
 });
 
-router.get('/empleados/', async (req, res) => {
+router.get('rest-api/personas/empleados/', async (req, res) => {
 	try {
 		const usuarios = await Usuarios.find({ tipo: "Empleado" });
 		const ids = [];
@@ -53,7 +53,7 @@ router.get('/empleados/', async (req, res) => {
 });
 
 
-router.get('/servicios/', async (req, res) => {
+router.get('rest-api/servicios/', async (req, res) => {
 	try {
 		const servicio = await Servicios.find();
 		res.json(servicio);
@@ -62,7 +62,7 @@ router.get('/servicios/', async (req, res) => {
 	}
 });
 
-router.get('/citas/', async (req, res) => {
+router.get('rest-api/citas/', async (req, res) => {
 	try {
 		const citas = await Citas.find();
 		res.json(citas);
@@ -73,25 +73,25 @@ router.get('/citas/', async (req, res) => {
 
 
 //Obtener uno
-router.get('/users/:id', getUsuario, (req, res) => {
+router.get('rest-api/usuarios/:id', getUsuario, (req, res) => {
 	res.send(res.usuario)
 });
 
-router.get('/personas/:id', getPersona, (req, res) => {
+router.get('rest-api/personas/:id', getPersona, (req, res) => {
 	res.send(res.usuario)
 });
 
-router.get('/servicios/:id', getServicio, (req, res) => {
+router.get('rest-api/servicios/:id', getServicio, (req, res) => {
 	res.send(res.usuario)
 });
 
-router.get('/citas/:id', getCita, (req, res) => {
+router.get('rest-api/citas/:id', getCita, (req, res) => {
 	res.send(res.usuario)
 });
 
 
 //Crear uno
-router.post('/personas', async (req, res) => {
+router.post('rest-api/personas', async (req, res) => {
 	const user = await Usuarios.findOne({ email: req.body.email });
 	const persona = await Personas.findOne({ cedula: req.body.cedula });
 	try {
@@ -123,7 +123,7 @@ router.post('/personas', async (req, res) => {
 
 });
 
-router.post('/citas', async (req, res) => {
+router.post('rest-api/citas', async (req, res) => {
 	try {
 
 		const newCita = new Citas();
@@ -143,7 +143,7 @@ router.post('/citas', async (req, res) => {
 
 
 //Actualizar uno
-router.patch('/users/:id', getUsuario, async (req, res) => {
+router.patch('rest-api/usuarios/:id', getUsuario, async (req, res) => {
 	console.log(res.usuario)
 	if (req.body.email != null) {
 		res.usuario.email = req.body.email;
@@ -160,7 +160,7 @@ router.patch('/users/:id', getUsuario, async (req, res) => {
 });
 
 //Eliminar uno
-router.delete('/users/:id', getUsuario, async (req, res) => {
+router.delete('rest-api/usuarios/:id', getUsuario, async (req, res) => {
 	try {
 		await res.usuario.remove()
 		res.json({ message: "Usuario Eliminado" })
@@ -169,7 +169,7 @@ router.delete('/users/:id', getUsuario, async (req, res) => {
 	}
 });
 
-router.delete('/servicios/:id', getServicio, async (req, res) => {
+router.delete('rest-api/servicios/:id', getServicio, async (req, res) => {
 	try {
 		await res.usuario.remove()
 		res.json({ message: "Servicio Eliminado" });
