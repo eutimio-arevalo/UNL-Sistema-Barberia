@@ -180,7 +180,7 @@ router.post('/seleccionar-empleado', isAuthenticated, async (req, res, next) => 
 	newCita.empleado = personaEmpleados[parseInt(btnradio)]._id;
 	await newCita.save();
 
-	res.redirect('home');
+	res.render('home');
 });
 
 
