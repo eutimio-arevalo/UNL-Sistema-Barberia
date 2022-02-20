@@ -73,6 +73,9 @@
                   <a class="nav-link" href="../admin/cita">Citas</a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" href="../admin/trabajo">Trabajos</a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link" href="../logout">Salir</a>
                 </li>
                 <% } %>
@@ -86,12 +89,17 @@
       <div class="alert alert-danger">
         <%= mensajeLogear %>
       </div>
-      <% } %>
-        <% if (mensajeRegistrar.length> 0){ %>
-          <div class="alert alert-danger">
-            <%= mensajeRegistrar %>
-          </div>
-          <% } %>
+    <% } %>
+    <% if (mensajeRegistrar.length> 0){ %>
+        <div class="alert alert-danger">
+          <%= mensajeRegistrar %>
+        </div>
+    <% } %>
+    <% if (mensajeCedula.length> 0){ %>
+      <div class="alert alert-danger">
+        <%= mensajeCedula %>
+      </div>
+    <% } %>
 
             <%- body %>
   </div>

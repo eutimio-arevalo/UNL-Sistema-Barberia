@@ -30,6 +30,7 @@ const { fstat } = require('fs');
 
 router.get('/', async (req, res, next) => {
 	const usuarios = await Usuarios.findOne({ tipo: "Admin" });
+	const trabajos = await Trabajos.find({})
 	if (!usuarios) {
 		const admin = await new Personas();
 		const user = await new Usuarios();
@@ -47,8 +48,10 @@ router.get('/', async (req, res, next) => {
 		user.save();
 		admin.save();
 	}
-
-	res.render('home');
+	//console.log(trabajos)
+	res.render('home', {
+		listaTrabajos: trabajos
+	});
 });
 
 router.get('/register', (req, res, next) => {
@@ -100,8 +103,8 @@ router.post('/perfil', isAuthenticated, async (req, res, next) => {
 	const usuario = req.user;
 	const persona = await Personas.findOne({ usuario: usuario._id });
 	const { nombre, apellido, nacimiento, telefono, email, password, image } = req.body;
-	console.log(req.body);
-	console.log(req.file);
+	//console.log(req.body);
+	//console.log(req.file);
 	persona.nombre = nombre;
 	persona.apellido = apellido;
 	persona.nacimiento = nacimiento;
@@ -112,9 +115,9 @@ router.post('/perfil', isAuthenticated, async (req, res, next) => {
 	usuario.email = email;
 	usuario.password = password;
 	if (req.file) {
-		console.log("Hay imagen");
+		//console.log("Hay imagen");
 		const result = await Cloudinary.v2.uploader.upload(req.file.path);
-		console.log(result);
+		//console.log(result);
 		persona.urlimage = result.url;
 		persona.public_id = result.public_id;
 	}
@@ -147,7 +150,7 @@ router.post('/reservar', isAuthenticated, async (req, res, next) => {
 	});
 	const personaEmpleados = await Personas.find({ usuario: { $in: ids } });
 	localStorage.setItem("selServicio", JSON.stringify(servicios[parseInt(btnRadio)]));
-	console.log(personaEmpleados)
+	//console.log(personaEmpleados)
 	const citas = await Citas.find({});
 
 	res.render('seleccionar-empleado', {
@@ -212,7 +215,7 @@ router.post('/personalizar', isAuthenticated, async (req, res, next) => {
 
 	const personaEmpleados = await Personas.find({ usuario: { $in: ids } });
 	localStorage.setItem("selServicio", JSON.stringify(servicios));
-	console.log(servicios)
+	//console.log(servicios)
 	res.render('seleccionar-empleado', {
 		userEmpleados: userEmpleados,
 		personaEmpleados: personaEmpleados,
@@ -251,9 +254,9 @@ router.post('/historial/cancelar', isAuthenticated, async (req, res, next) => {
 
 	const { posicion } = req.body;
 	const servicio = await Servicios.findOne({ _id: citas[posicion].servicio });
-	console.log(posicion)
+	//console.log(posicion)
 
-	console.log("No se elimina")
+	//console.log("No se elimina")
 	citas[posicion].estado = "Cancelado";
 	await citas[posicion].save();
 
@@ -345,7 +348,7 @@ router.post('/eliminar/cliente', isAuthenticated, async (req, res, next) => {
 	const { posicion } = req.body;
 	const empleado = empleados[parseInt(posicion)];
 	await empleado.remove();
-	console.log(empleado);
+	//console.log(empleado);
 
 	listaEmpleados = await Usuarios.find({ tipo: "Cliente" });
 	const auxEmpleado = await Usuarios.find({ tipo: "Cliente" });
@@ -429,7 +432,7 @@ router.post('/editar/empleado', isAuthenticated, async (req, res, next) => {
 
 	const { nombre, apellido, nacimiento, cedula, telefono, email, password, posicion } = req.body;
 	const actEmpleado = empleados[parseInt(posicion)];
-	console.log("Posicion:", posicion)
+	//console.log("Posicion:", posicion)
 	const actUsuario = userEmpleados[parseInt(posicion)];
 	actEmpleado.nombre = nombre;
 	actEmpleado.apellido = apellido;
@@ -472,7 +475,7 @@ router.post('/eliminar/empleado', isAuthenticated, async (req, res, next) => {
 	const { posicion } = req.body;
 	const empleado = empleados[parseInt(posicion)];
 	await empleado.remove();
-	console.log(empleado);
+	//console.log(empleado);
 
 	listaEmpleados = await Usuarios.find({ tipo: "Empleado" });
 	const auxEmpleado = await Usuarios.find({ tipo: "Empleado" });
@@ -499,8 +502,8 @@ router.get('/admin/servicio', isAuthenticated, async (req, res, next) => {
 
 router.post('/agregar/servicio', isAuthenticated, async (req, res, next) => {
 	const { nombre, descripcion, tipo, precio, image } = req.body;
-	console.log(req.file);
-	console.log(req.body);
+	//console.log(req.file);
+	//console.log(req.body);
 	const newServicio = new Servicios();
 	newServicio.nombre = nombre;
 	newServicio.descripcion = descripcion;
@@ -542,7 +545,7 @@ router.post('/eliminar/servicio', isAuthenticated, async (req, res, next) => {
 	const { posicion } = req.body;
 	const servicio = servicios[parseInt(posicion)];
 	await servicio.remove();
-	console.log(servicio);
+	//console.log(servicio);
 	const listaservicios = await Servicios.find({});
 	res.render('admin/servicio', {
 		listaServicios: listaservicios
@@ -600,6 +603,44 @@ router.post('/editar/citas', isAuthenticated, async (req, res, next) => {
 		empleados: listaEmpleados,
 		servicios: listaServicios,
 		clientes: listaClientes
+	});
+});
+
+router.get('/admin/trabajo', isAuthenticated, async (req, res, next) => {
+	const listaTrabajos = await Trabajos.find({});
+	res.render('admin/trabajo', {
+		listaTrabajos: listaTrabajos
+	});
+});
+
+router.post('/admin/trabajo', isAuthenticated, async (req, res, next) => {
+	const { descripcion } = req.body;
+	const result = await Cloudinary.v2.uploader.upload(req.file.path);
+
+	const newTrabajo = new Trabajos();
+	
+	newTrabajo.descripcion = descripcion;
+	newTrabajo.urlimage = result.url;
+	newTrabajo.public_id = result.public_id;
+
+	await newTrabajo.save();
+
+	const listaTrabajos = await Trabajos.find({});
+
+	res.render('admin/trabajo', {
+		listaTrabajos: listaTrabajos
+	});
+});
+
+router.post('/eliminar/trabajo', isAuthenticated, async (req, res, next) => {
+	const trabajos = await Trabajos.find({});
+	const { posicion } = req.body;
+	await trabajos[posicion].remove();
+
+	const listaTrabajos = await Trabajos.find({});
+
+	res.render('admin/trabajo', {
+		listaTrabajos: listaTrabajos
 	});
 });
 

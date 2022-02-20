@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const trabajoSchema = new Schema({
-	descripcion: {type: String, maxlength:500, unique:true, required: true},
+	descripcion: {type: String, maxlength:500, required: true},
 	urlimage: {type: String, required:false},
 	public_id: {type: String, required:false}
 	//departamento : { type: Schema.Types.ObjectId, ref: 'Departamento' , unique:true, required:true}

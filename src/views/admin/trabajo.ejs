@@ -1,0 +1,66 @@
+<%- layout('./layouts/main.ejs') %>
+
+    <div class="row align-items-center justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-4 text-center">
+                <div class="card-header">
+                    <h3>Registrar Previews</h3>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/trabajo" method="POST" enctype="multipart/form-data" autocomplete="off">
+
+                        <div class="form-group">
+                            <textarea class="form-control mt-2" name="descripcion" placeholder="Descripción" rows="2"
+                                required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <img src="../../public/images/waiting.gif" id="preview" width="300" height="250"
+                                class="rounded mx-auto d-block mt-2" alt="Preview">
+                            <label for="formFile" class="form-label mt-4">Selecciona una imagen</label>
+                            <input type="file" id="formFile" name="image" class="form-control" required>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-block mt-4">Aceptar</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="overflow-auto">
+        <div class="container">
+            <table class="table table-sm text-center mt-4">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% listaTrabajos.forEach(function (trabajo, i) { %>
+                        <tr>
+                            <td>
+                                <%= trabajo.descripcion %>
+                            </td>
+                            <td >
+                                <img src="<%= trabajo.urlimage %>" alt="Preview Trabajo" height="100" width="100">
+                            </td>
+                            <td class="text-center">
+                                <form action="/eliminar/trabajo" method="POST" autocomplete="off">
+                                    <input type="hidden" value="<%= i %>" name="posicion">
+                                    <button type="submit" class="btn btn-danger"><i
+                                            class="far fa-trash-alt"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="../../public/javascript/preview.js"></script>
