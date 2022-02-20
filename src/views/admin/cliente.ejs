@@ -1,49 +1,84 @@
 <%- layout('./layouts/main.ejs') %>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Editar Servicios</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-center">
-                                <form action="/signin" method="POST">
+<% if(listaPersonas.length> 0){ %>
+    <script>
+        var clientes = '<%- JSON.stringify(listaPersonas);  %>'
+        var usuarios = '<%- JSON.stringify(listaUsers);  %>'
+        sessionStorage.setItem("listaClientes", clientes);
+        sessionStorage.setItem("listaUsuarios", usuarios);
+    </script>
+<% }else{ %>
+        <script>
+            sessionStorage.clear();
+        </script>
+<% } %>
+
+    <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar Cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <form action="/editar/cliente" method="POST" enctype="multipart/form-data" autocomplete="off">
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
                                     <div class="form-group">
-                                        <input type="text" name="nombre" placeholder="Nombre" class="form-control mt-2" required>
+                                        <input type="hidden" name="posicion" id="modalPosicion">
+                                        <input id="modalNombre" type="text" name="nombre" placeholder="Nombre"
+                                            class="form-control" required>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" name="apellido" placeholder="Apellido" class="form-control mt-2" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="Date" name="nacimiento" placeholder="Fecha de Nacimiento" class="form-control mt-2" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" name="cedula" minlength="10" maxlength="10" placeholder="Cedula"
+                                        <input id="modalApellido" type="text" name="apellido" placeholder="Apellido"
                                             class="form-control mt-2" required>
                                     </div>
                                     <div class="form-group">
-                                        <input type="tel" name="telefono"  placeholder="Telefono Movil" class="form-control mt-2" required>
+                                        <input id="modalNacimiento" type="Date" name="nacimiento"
+                                            placeholder="Fecha de Nacimiento" class="form-control mt-2" min="1922-01-01"
+                                            max="2010-12-31" required>
                                     </div>
                                     <div class="form-group">
-                                        <input type="email" name="email" placeholder="Email" class="form-control mt-2" required>
+                                        <input id="modalCedula" type="text" name="cedula" minlength="10" maxlength="10"
+                                            placeholder="Cedula" class="form-control mt-2" required>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" name="clave" placeholder="Contaseña" class="form-control mt-2" required> 
+                                        <input id="modalTelefono" type="text" name="telefono"
+                                            placeholder="Telefono Movil" class="form-control mt-2" required>
                                     </div>
-            
-                                    <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary btn-block mt-4">Aceptar</button>
+                                    <div class="form-group">
+                                        <input id="modalEmail" type="email" name="email" placeholder="Email"
+                                            class="form-control mt-2" required>
                                     </div>
-                                
-                                </form>
+                                    <div class="form-group">
+                                        <input id="modalPassword" type="text" name="password" placeholder="Contaseña"
+                                            class="form-control mt-2" required>
+                                    </div>
+
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <img src="#" id="modalImg" width="250" height="290"
+                                            class="rounded mx-auto d-block mt-2" alt="Preview">
+                                        <input type="file" id="formFile" name="image" class="form-control mt-2">
+                                    </div>
+                                </div>
                             </div>
 
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-block mt-4">Aceptar</button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
+
+            </div>
+        </div>
+    </div>
 
     <div class="overflow-auto">
         <div class="container mt-4">
@@ -64,7 +99,7 @@
                         <tbody>
                             <% listaPersonas.forEach(function (empleado, i) { %>
                                 <tr>
-    
+
                                     <td>
                                         <%= empleado.nombre %>
                                     </td>
@@ -86,14 +121,14 @@
                                         </button>
                                     </td>
                                     <td class="text-center">
-                                        <form action="/admin/servicio/eliminar" method="POST">
+                                        <form action="/eliminar/cliente" method="POST">
 
                                             <input type="hidden" value="<%= i %>" name="posicion">
                                             <button type="submit" class="btn btn-danger"><i
                                                     class="far fa-trash-alt"></i></button>
                                         </form>
                                     </td>
-    
+
                                 </tr>
                                 <% }); %>
                         </tbody>
@@ -102,3 +137,4 @@
             </div>
         </div>
     </div>
+    <script src="../../public/javascript/adminCliente.js"></script>

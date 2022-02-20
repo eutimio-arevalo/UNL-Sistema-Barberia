@@ -1,0 +1,155 @@
+<%- layout('layouts/main.ejs') %>
+
+    <!-- Button trigger modal -->
+    <% if(listaCitas.length> 0){ %>
+        <script>
+            var lista = '<%- JSON.stringify(listaCitas);  %>'
+            sessionStorage.setItem("listaCitas", lista);
+        </script>
+        <% }else{ %>
+            <script>
+                sessionStorage.clear();
+            </script>
+            <% } %>
+
+                <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar Servicios</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <form action="/historial/cancelar" method="POST" enctype="multipart/form-data"
+                    autocomplete="off">
+                    <div class="form-group">
+                        <h5 class="mb-6">
+                            ¿Desea cancelar su cita?
+                        </h5>
+                    </div>
+                    <div class="form-group mt-6">
+                        <input type="hidden" name="posicion" id="modalPosicion">
+                        <button type="submit" class="btn btn-danger text-center"
+                            data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-success text-center"
+                            data-bs-dismiss="modal">Regresar</button>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<% if(listaCitas.length> 0){ %>
+
+
+    <div class="card mt-4 text-center">
+        <div class="card-header">
+            <h2>Citas Reservadas</h2>
+        </div>
+        <div class="card-body text-center">
+            <div class="card mt-2">
+                <div class="row align-items-center justify-content-center">
+
+                    <div class="col">
+                        <h4>
+                            Empleado
+                        </h4>
+                    </div>
+                    <div class="col">
+                        <h4>
+                            Servicio
+                        </h4>
+                    </div>
+                    <div class="col">
+                        <h4>
+                            Fecha
+                        </h4>
+                    </div>
+                    <div class="col">
+                        <h4>
+                            Hora
+                        </h4>
+                    </div>
+                    <div class="col">
+                        <h4>
+                            Cancelar
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <% listaCitas.forEach(function (cita, i) { %>
+                <div class="card mt-2">
+                    <div class="row align-items-center justify-content-center">
+
+                        <div class="col">
+                            <img src="<%= empleados[i].urlimage %>" alt="empleado" width="100"
+                                height="100" class="mb-2 mt-2">
+                            <p>
+                                <%= empleados[i].nombre %>
+                                    <%= empleados[i].apellido %>
+                            </p>
+                        </div>
+                        <div class="col">
+                            <img src="<%= servicios[i].urlimage %>" alt="servicio" width="100"
+                                height="100" class="mb-2 mt-2">
+                            <p>
+                                <%= servicios[i].nombre %>
+                            </p>
+                        </div>
+                        <div class="col">
+                            <p>
+                                <%= cita.fechaCita %>
+                            </p>
+                        </div>
+                        <div class="col">
+                            <p class="justify-content-md-center">
+                                <%= cita.horaCita %>
+                            </p>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                                <i class="fas fa-ban"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <% }); %>
+        </div>
+
+        <div class="row justify-content-center mb-4">
+            <div class="text-center">
+                <button class="btn btn-primary profile-button mt-4" type="submit">Reservar</button>
+            </div>
+        </div>
+    </div>
+
+    <% }else{ %>
+        <div class="card mt-4 text-center">
+            <div class="card-header">
+                <h1>Aun no tienes ninguna cita</h1>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <h3>Bienvenido <%= cliente.nombre %> <%= cliente.apellido %>!!!  </h3>
+                </div>
+            
+                    <img src="../public/images/perfil.jpg" width="300" height="200" alt="logo">
+               
+
+                <div class="row mt-4">
+                    <p class="text-justify">Puedes reservar tu primera cita en la sección de <a href="/reservar">RESERVAR CITA</a> o si prefieres que uno de nuestros empleados haga un corte segun tus instrucciones en la sección <a href="/personalizar">RESERVAR CITA PERSONALIZADA</a></p>
+                </div>
+                
+            </div>
+        </div>
+        <% } %>
+            <script src="../public/javascript/adminHistorial.js"></script>

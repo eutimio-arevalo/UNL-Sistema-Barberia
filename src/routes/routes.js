@@ -28,9 +28,9 @@ const { fstat } = require('fs');
 
 //------------------------------------------------------------------------------------------------
 
-router.get('/', async(req, res, next) => {
+router.get('/', async (req, res, next) => {
 	const usuarios = await Usuarios.findOne({ tipo: "Admin" });
-	if(!usuarios){
+	if (!usuarios) {
 		const admin = await new Personas();
 		const user = await new Usuarios();
 		admin.nombre = "Admin-Nombre";
@@ -47,6 +47,7 @@ router.get('/', async(req, res, next) => {
 		user.save();
 		admin.save();
 	}
+
 	res.render('home');
 });
 
@@ -105,7 +106,7 @@ router.post('/perfil', isAuthenticated, async (req, res, next) => {
 	persona.apellido = apellido;
 	persona.nacimiento = nacimiento;
 	persona.telefono = telefono;
-	if(usuario.tipo == "Admin"){
+	if (usuario.tipo == "Admin") {
 		persona.cedula = req.body.cedula;
 	}
 	usuario.email = email;
@@ -119,7 +120,7 @@ router.post('/perfil', isAuthenticated, async (req, res, next) => {
 	}
 	await persona.save();
 	await usuario.save();
-	if(req.file){
+	if (req.file) {
 		await unlink(req.file.path);
 	}
 	res.render('perfil', {
@@ -146,7 +147,7 @@ router.post('/reservar', isAuthenticated, async (req, res, next) => {
 	});
 	const personaEmpleados = await Personas.find({ usuario: { $in: ids } });
 	localStorage.setItem("selServicio", JSON.stringify(servicios[parseInt(btnRadio)]));
-
+	console.log(personaEmpleados)
 	const citas = await Citas.find({});
 
 	res.render('seleccionar-empleado', {
@@ -220,6 +221,63 @@ router.post('/personalizar', isAuthenticated, async (req, res, next) => {
 	});
 });
 
+
+router.get('/historial', isAuthenticated, async (req, res, next) => {
+
+	const cliente = await Personas.findOne({ usuario: req.user._id });
+	const citas = await Citas.find({ cliente: cliente._id, estado: "Pendiente" });
+	var listaEmpleados = [];
+	var listaServicios = [];
+
+	for (i = 0; i < citas.length; i++) {
+		const empleado = await Personas.findOne({ _id: citas[i].empleado });
+		listaEmpleados[i] = empleado;
+		const servicio = await Servicios.findOne({ _id: citas[i].servicio });
+		listaServicios[i] = servicio;
+
+	}
+
+	res.render('historial', {
+		listaCitas: citas,
+		empleados: listaEmpleados,
+		servicios: listaServicios,
+		cliente: cliente
+	});
+});
+
+router.post('/historial/cancelar', isAuthenticated, async (req, res, next) => {
+	const cliente = await Personas.findOne({ usuario: req.user._id });
+	const citas = await Citas.find({ cliente: cliente._id, estado: "Pendiente" });
+
+	const { posicion } = req.body;
+	const servicio = await Servicios.findOne({ _id: citas[posicion].servicio });
+	console.log(posicion)
+
+	console.log("No se elimina")
+	citas[posicion].estado = "Cancelado";
+	await citas[posicion].save();
+
+
+	newcitas = await Citas.find({ cliente: cliente._id, estado: "Pendiente" });
+	var listaEmpleados = [];
+	var listaServicios = [];
+
+	for (i = 0; i < newcitas.length; i++) {
+		const empleado = await Personas.findOne({ _id: newcitas[i].empleado });
+		listaEmpleados[i] = empleado;
+		const servicio = await Servicios.findOne({ _id: newcitas[i].servicio });
+		listaServicios[i] = servicio;
+
+	}
+
+	res.render('historial', {
+		listaCitas: newcitas,
+		empleados: listaEmpleados,
+		servicios: listaServicios,
+		cliente: cliente
+	});
+});
+
 router.get('/admin/cliente', isAuthenticated, async (req, res, next) => {
 	const userCliente = await Usuarios.find({ tipo: "Cliente" });
 	const aux = await Usuarios.find({ tipo: "Cliente" });
@@ -232,6 +290,74 @@ router.get('/admin/cliente', isAuthenticated, async (req, res, next) => {
 	res.render('admin/cliente', {
 		listaUsers: userCliente,
 		listaPersonas: personaCliente
+	});
+});
+
+router.post('/editar/cliente', isAuthenticated, async (req, res, next) => {
+	const userEmpleados = await Usuarios.find({ tipo: "Cliente" });
+	const aux = await Usuarios.find({ tipo: "Cliente" });
+	const ids = [];
+	aux.forEach(auxi => {
+		ids.push(auxi._id);
+	});
+	const empleados = await Personas.find({ usuario: { $in: ids } });
+
+	const { nombre, apellido, nacimiento, cedula, telefono, email, password, posicion } = req.body;
+	const actEmpleado = empleados[parseInt(posicion)];
+	const actUsuario = userEmpleados[parseInt(posicion)];
+	actEmpleado.nombre = nombre;
+	actEmpleado.apellido = apellido;
+	actEmpleado.nacimiento = nacimiento;
+	actEmpleado.cedula = cedula;
+	actEmpleado.telefono = telefono;
+	actUsuario.email = email;
+	actUsuario.password = password;
+
+	if (req.file) {
+		const result = await Cloudinary.v2.uploader.upload(req.file.path);
+		actEmpleado.urlimage = result.url;
+		actEmpleado.public_id = result.public_id;
+	}
+	await actEmpleado.save();
+	await actUsuario.save();
+
+	const listaClientes = await Usuarios.find({ tipo: "Cliente" });
+	const auxClientes = await Usuarios.find({ tipo: "Cliente" });
+	const idsClientes = [];
+	auxClientes.forEach(auxi => {
+		idsClientes.push(auxi._id);
+	});
+	const personaClientes = await Personas.find({ usuario: { $in: ids } });
+
+	res.render('admin/cliente', {
+		listaUsers: listaClientes,
+		listaPersonas: personaClientes
+	});
+});
+
+router.post('/eliminar/cliente', isAuthenticated, async (req, res, next) => {
+	const aux = await Usuarios.find({ tipo: "Cliente" });
+	const ids = [];
+	aux.forEach(auxi => {
+		ids.push(auxi._id);
+	});
+	const empleados = await Personas.find({ usuario: { $in: ids } });
+	const { posicion } = req.body;
+	const empleado = empleados[parseInt(posicion)];
+	await empleado.remove();
+	console.log(empleado);
+
+	listaEmpleados = await Usuarios.find({ tipo: "Cliente" });
+	const auxEmpleado = await Usuarios.find({ tipo: "Cliente" });
+	const idsEmpleado = [];
+	auxEmpleado.forEach(auxi => {
+		idsEmpleado.push(auxi._id);
+	});
+	const personaEmpleados = await Personas.find({ usuario: { $in: idsEmpleado } });
+
+	res.render('admin/cliente', {
+		listaUsers: listaEmpleados,
+		listaPersonas: personaEmpleados
 	});
 });
 
@@ -250,7 +376,8 @@ router.get('/admin/empleado', isAuthenticated, async (req, res, next) => {
 	});
 });
 
-router.post('/admin/empleado', isAuthenticated, async (req, res, next) => {
+
+router.post('/agregar/empleado', isAuthenticated, async (req, res, next) => {
 	const { nombre, apellido, nacimiento, cedula, telefono, email, password, image } = req.body;
 	const user = await Usuarios.findOne({ email: email });
 	const cliente = await Personas.findOne({ cedula: cedula });;
@@ -299,9 +426,10 @@ router.post('/editar/empleado', isAuthenticated, async (req, res, next) => {
 		ids.push(auxi._id);
 	});
 	const empleados = await Personas.find({ usuario: { $in: ids } });
-	
+
 	const { nombre, apellido, nacimiento, cedula, telefono, email, password, posicion } = req.body;
 	const actEmpleado = empleados[parseInt(posicion)];
+	console.log("Posicion:", posicion)
 	const actUsuario = userEmpleados[parseInt(posicion)];
 	actEmpleado.nombre = nombre;
 	actEmpleado.apellido = apellido;
@@ -317,32 +445,46 @@ router.post('/editar/empleado', isAuthenticated, async (req, res, next) => {
 		actEmpleado.urlimage = result.url;
 		actEmpleado.public_id = result.public_id;
 	}
-	actEmpleado.save();
-	actUsuario.save();
+	await actEmpleado.save();
+	await actUsuario.save();
 
-	userEmpleados = await Usuarios.find({ tipo: "Empleado" });
-	aux = await Usuarios.find({ tipo: "Empleado" });
-	ids = [];
-	aux.forEach(auxi => {
-		ids.push(auxi._id);
+	listaEmpleados = await Usuarios.find({ tipo: "Empleado" });
+	const auxEmpleado = await Usuarios.find({ tipo: "Empleado" });
+	const idsEmpleado = [];
+	auxEmpleado.forEach(auxi => {
+		idsEmpleado.push(auxi._id);
 	});
-	const personaEmpleados = await Personas.find({ usuario: { $in: ids } });
+	const personaEmpleados = await Personas.find({ usuario: { $in: idsEmpleado } });
 
 	res.render('admin/empleado', {
-		listaUsers: userEmpleados,
+		listaUsers: listaEmpleados,
 		listaPersonas: personaEmpleados
 	});
 });
 
 router.post('/eliminar/empleado', isAuthenticated, async (req, res, next) => {
-	const servicios = await Servicios.find({});
+	const aux = await Usuarios.find({ tipo: "Empleado" });
+	const ids = [];
+	aux.forEach(auxi => {
+		ids.push(auxi._id);
+	});
+	const empleados = await Personas.find({ usuario: { $in: ids } });
 	const { posicion } = req.body;
-	const servicio = servicios[parseInt(posicion)];
-	await servicio.remove();
-	console.log(servicio);
-	const listaservicios = await Servicios.find({});
+	const empleado = empleados[parseInt(posicion)];
+	await empleado.remove();
+	console.log(empleado);
+
+	listaEmpleados = await Usuarios.find({ tipo: "Empleado" });
+	const auxEmpleado = await Usuarios.find({ tipo: "Empleado" });
+	const idsEmpleado = [];
+	auxEmpleado.forEach(auxi => {
+		idsEmpleado.push(auxi._id);
+	});
+	const personaEmpleados = await Personas.find({ usuario: { $in: idsEmpleado } });
+
 	res.render('admin/empleado', {
-		listaServicios: listaservicios
+		listaUsers: listaEmpleados,
+		listaPersonas: personaEmpleados
 	});
 });
 
@@ -355,7 +497,7 @@ router.get('/admin/servicio', isAuthenticated, async (req, res, next) => {
 	});
 });
 
-router.post('/admin/servicio', isAuthenticated, async (req, res, next) => {
+router.post('/agregar/servicio', isAuthenticated, async (req, res, next) => {
 	const { nombre, descripcion, tipo, precio, image } = req.body;
 	console.log(req.file);
 	console.log(req.body);
@@ -407,6 +549,59 @@ router.post('/eliminar/servicio', isAuthenticated, async (req, res, next) => {
 	});
 });
 
+router.get('/admin/cita', isAuthenticated, async (req, res, next) => {
+	const citas = await Citas.find({});
+
+	var listaEmpleados = [];
+	var listaServicios = [];
+	var listaClientes = [];
+
+	for (i = 0; i < citas.length; i++) {
+		const empleado = await Personas.findOne({ _id: citas[i].empleado });
+		listaEmpleados[i] = empleado;
+		const servicio = await Servicios.findOne({ _id: citas[i].servicio });
+		listaServicios[i] = servicio;
+		const cliente = await Personas.findOne({ _id: citas[i].cliente });
+		listaClientes[i] = cliente;
+	}
+
+	res.render('admin/cita', {
+		listaCitas: citas,
+		empleados: listaEmpleados,
+		servicios: listaServicios,
+		clientes: listaClientes
+	});
+});
+
+router.post('/editar/citas', isAuthenticated, async (req, res, next) => {
+
+	const auxCitas = await Citas.find({});
+	const { estado, posicion } = req.body;
+	auxCitas[parseInt(posicion)].estado = estado;
+	await auxCitas[parseInt(posicion)].save()
+
+	const citas = await Citas.find({});
+
+	var listaEmpleados = [];
+	var listaServicios = [];
+	var listaClientes = [];
+
+	for (i = 0; i < citas.length; i++) {
+		const empleado = await Personas.findOne({ _id: citas[i].empleado });
+		listaEmpleados[i] = empleado;
+		const servicio = await Servicios.findOne({ _id: citas[i].servicio });
+		listaServicios[i] = servicio;
+		const cliente = await Personas.findOne({ _id: citas[i].cliente });
+		listaClientes[i] = cliente;
+	}
+
+	res.render('admin/cita', {
+		listaCitas: citas,
+		empleados: listaEmpleados,
+		servicios: listaServicios,
+		clientes: listaClientes
+	});
+});
 
 function isAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {

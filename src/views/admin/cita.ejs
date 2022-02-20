@@ -1,0 +1,156 @@
+<%- layout('./layouts/main.ejs') %>
+
+<% if(listaCitas.length> 0){ %>
+    <script>
+        var citas = '<%- JSON.stringify(listaCitas);  %>'
+        sessionStorage.setItem("listaCitas", citas);
+        var servicios = '<%- JSON.stringify(servicios);  %>'
+        sessionStorage.setItem("listaServicios", servicios);
+        var empleados = '<%- JSON.stringify(empleados);  %>'
+        sessionStorage.setItem("listaEmpleados", empleados);
+        var clientes = '<%- JSON.stringify(clientes);  %>'
+        sessionStorage.setItem("listaClientes", clientes);
+    </script>
+    <% }else{ %>
+        <script>
+            sessionStorage.clear();
+        </script>
+        <% } %>
+
+    <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar Cita</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <form action="/editar/citas" method="POST" enctype="multipart/form-data" autocomplete="off">
+                        <input type="hidden" name="posicion" id="modalPosicion">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <h5>Empleado</h5>
+                                        <img src="#" id="imgEmpleado" height="100" width="100" alt="empleado">
+                                        <p id="modalEmpleado"></p>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <h5>Cliente</h5>
+                                        <img src="#" id="imgCliente" height="100" width="100" alt="cliente">
+                                        <p id="modalCliente"></p>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <h5>Servicio</h5>
+                                        <img src="#" id="imgServicio" height="100" width="100" alt="servicio">
+                                        <p id="modalServicio"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <h5>Fecha</h5>
+                                        <p id="modalFecha">Feccha</p>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <h5>Hora</h5>
+                                        <p id="modalHora">Hora</p>
+                                        
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <h5>Estado</h5>
+                                        <select id="selEstado" name="estado" class="form-select mt-2"
+                                            aria-label="Default select example" required>
+                                            <option value="Pendiente">Pendiente</option>
+                                            <option value="Completado">Completado</option>
+                                            <option value="Cancelado">Cancelado</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 mt-2">
+                                <button type="submit" class="btn btn-primary btn-block mt-4">Aceptar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="overflow-auto">
+        <div class="container mt-4">
+            <table class="table table-sm text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">Empleado</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Servicio</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Hora</th>
+                        <th scope="col">Editar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% listaCitas.forEach(function (cita, i) { %>
+                        <tr>
+
+                            <td>
+                                <h6>
+                                    <%= empleados[i].nombre %>
+                                        <%= empleados[i].apellido %>
+                                </h6>
+                                <img src="<%=  empleados[i].urlimage %>" height="100" width="100" alt="empleado">
+
+                            </td>
+                            <td>
+                                <h6>
+                                    <%= clientes[i].nombre %>
+                                        <%= clientes[i].apellido %>
+                                </h6>
+                                <img src="<%=  clientes[i].urlimage %>" height="100" width="100" alt="empleado">
+                            </td>
+                            <td>
+                                <h6>
+                                    <%= servicios[i].nombre %>
+                                </h6>
+                                <img src="<%=  servicios[i].urlimage %>" height="100" width="100" alt="empleado">
+                            </td>
+                            <td>
+                                <%= cita.fechaCita %>
+                            </td>
+                            <td>
+                                <%= cita.horaCita %>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"><i class="fas fa-edit"></i>
+                                </button>
+                            </td>
+
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../../public/javascript/adminCIta.js"></script>

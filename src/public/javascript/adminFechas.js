@@ -11,10 +11,13 @@ for (let i = 0; i < radio.length; i++) {
 }
 
 var empleados = JSON.parse(sessionStorage.getItem("listaEmpleados"));
+console.log(empleados)
 var empleado = null;
 for (let i = 0; i < radio.length; i++) {
     radio[i].addEventListener('click', function () {
+        console.log("click");
         empleado = empleados[i];
+        console.log(empleado);
         fecha.disabled = false;
         selhora.disabled = false;
         selhora.value = null;

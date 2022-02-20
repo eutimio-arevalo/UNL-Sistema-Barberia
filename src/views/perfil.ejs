@@ -2,10 +2,10 @@
     <div class="container rounded bg-white mt-2 mb-2">
         <div class="row justify-content-center">
             <div class="col-md-3 border-right ml-4">
-                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img id="preview"
                         class="rounded-circle mt-5 mb-4" width="150px" height="150px" src="<%= persona.urlimage %>">
                     <div>
-                        <label for="files" class="btn btn-outline-primary">Cambiar Foto</label>
+                        <label for="formFile" class="btn btn-outline-primary">Cambiar Foto</label>
                     </div>
 
                     <span class="font-weight-bold mt-4">
@@ -19,7 +19,7 @@
             <div class="col-md-5 border-right">
                 <div class="p-3 py-5">
                     <form action="/perfil" method="POST" enctype="multipart/form-data">
-                        <input type="file" id="files" name="image" style="visibility: hidden;">
+                        <input type="file" id="formFile" name="image" style="visibility: hidden;">
                         <div class="row mt-2">
                             <div class="col-md-6"><label class="labels">Nombre</label><input type="text" name="nombre"
                                     class="form-control" value="<%= persona.nombre %>"></div>
@@ -53,3 +53,4 @@
         </div>
 
     </div>
+    <script src="../public/javascript/preview.js"></script>

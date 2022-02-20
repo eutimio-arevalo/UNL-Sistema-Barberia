@@ -89,6 +89,77 @@ router.get('/rest-api/citas/:id', getCita, (req, res) => {
 	res.send(res.usuario)
 });
 
+router.get('/rest-api/citas/cliente/:id', getPersona, async(req, res) => {
+	try {
+		const servicio = await Citas.find({ cliente: res.usuario._id });
+		res.json(servicio);
+	} catch (err) {
+		res.status(500).json({ message: err.message })
+	}
+});
+
+router.get('/rest-api/citas/pendiente/cliente/:id', getPersona, async(req, res) => {
+	try {
+		const servicio = await Citas.find({ cliente: res.usuario._id, estado: "Pendiente" });
+		res.json(servicio);
+	} catch (err) {
+		res.status(500).json({ message: err.message })
+	}
+});
+
+router.get('/rest-api/citas/finalizado/cliente/:id', getPersona, async(req, res) => {
+	try {
+		const servicio = await Citas.find({ cliente: res.usuario._id, estado: "Finalizado" });
+		res.json(servicio);
+	} catch (err) {
+		res.status(500).json({ message: err.message })
+	}
+});
+
+router.get('/rest-api/citas/cancelado/cliente/:id', getPersona, async(req, res) => {
+	try {
+		const servicio = await Citas.find({ cliente: res.usuario._id, estado: "Cancelado" });
+		res.json(servicio);
+	} catch (err) {
+		res.status(500).json({ message: err.message })
+	}
+});
+
+router.get('/rest-api/citas/empleado/:id', getPersona, async(req, res) => {
+	try {
+		const servicio = await Citas.find({ empleado: res.usuario._id });
+		res.json(servicio);
+	} catch (err) {
+		res.status(500).json({ message: err.message })
+	}
+});
+
+router.get('/rest-api/citas/pendiente/empleado/:id', getPersona, async(req, res) => {
+	try {
+		const servicio = await Citas.find({ empleado: res.usuario._id, estado: "Pendiente" });
+		res.json(servicio);
+	} catch (err) {
+		res.status(500).json({ message: err.message })
+	}
+});
+
+router.get('/rest-api/citas/finalizado/empleado/:id', getPersona, async(req, res) => {
+	try {
+		const servicio = await Citas.find({ empleado: res.usuario._id, estado: "Finalizado" });
+		res.json(servicio);
+	} catch (err) {
+		res.status(500).json({ message: err.message })
+	}
+});
+
+router.get('/rest-api/citas/cancelado/empleado/:id', getPersona, async(req, res) => {
+	try {
+		const servicio = await Citas.find({ empleado: res.usuario._id, estado: "Cancelado" });
+		res.json(servicio);
+	} catch (err) {
+		res.status(500).json({ message: err.message })
+	}
+});
 
 //Crear uno
 router.post('/rest-api/personas', async (req, res) => {
@@ -128,6 +199,7 @@ router.post('/rest-api/citas', async (req, res) => {
 
 		const newCita = new Citas();
 		newCita.fechaCita = req.body.fechaCita;
+		newCita.horaCita = req.body.horaCita;
 		newCita.estado = req.body.estado;
 		newCita.cliente = req.body.cliente;
 		newCita.servicio = req.body.servicio;
@@ -143,13 +215,10 @@ router.post('/rest-api/citas', async (req, res) => {
 
 
 //Actualizar uno
-router.patch('/rest-api/usuarios/:id', getUsuario, async (req, res) => {
+router.patch('/rest-api/citas/:id', getCita, async (req, res) => {
 	console.log(res.usuario)
-	if (req.body.email != null) {
-		res.usuario.email = req.body.email;
-	}
-	if (req.body.password != null) {
-		res.usuario.password = req.body.password;
+	if (req.body.estado != null) {
+		res.usuario.estado = req.body.estado;
 	}
 	try {
 		const updateUsuario = await res.usuario.save();

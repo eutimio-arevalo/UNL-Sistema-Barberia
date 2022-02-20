@@ -26,6 +26,7 @@ for(let i = 0; i<boton.length; i++){
         modalImg.src = empleados[i]["urlimage"];
 
         modalPosicion.value = i;
+        console.log(modalPosicion.value)
         //onsole.log('empleados: ',empleados[i-1]["precio"]);
     });
 }

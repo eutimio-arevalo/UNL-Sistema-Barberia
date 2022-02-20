@@ -13,9 +13,13 @@
             </script>
     <% } %>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+      
+    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content"> -->
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Editar Empleado</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -27,7 +31,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
-                                    <input type="hidden" id="modalPosicion">
+                                    <input type="hidden" name="posicion" id="modalPosicion">
                                         <input id="modalNombre" type="text" name="nombre" placeholder="Nombre" class="form-control"
                                             required>
                                     </div>
@@ -55,16 +59,17 @@
                                         <input id="modalPassword" type="text" name="password" placeholder="Contaseña"
                                             class="form-control mt-2" required>
                                     </div>
+
+                                </div>
+                                <div class="col">
                                     <div class="form-group">
                                         <img src="#" id="modalImg" width="250" height="290" class="rounded mx-auto d-block mt-2"
                                         alt="Preview">
                                         <input type="file" id="formFile" name="image" class="form-control mt-2">
                                     </div>
-
-
                                 </div>
                             </div>
-
+                           
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary btn-block mt-4">Aceptar</button>
                             </div>
@@ -78,7 +83,7 @@
 
 
     <div class="container mt-4">
-        <form action="/admin/empleado" method="POST" enctype="multipart/form-data" autocomplete="off">
+        <form action="/agregar/empleado" method="POST" enctype="multipart/form-data" autocomplete="off">
             <div class="card">
                 <div class="card-header">
                     <h4>Registrar Empleado</h4>
@@ -191,3 +196,4 @@
     </div>
 
     <script src="../../public/javascript/adminEmpleado.js"></script>
+    <script src="../../public/javascript/preview.js"></script>
