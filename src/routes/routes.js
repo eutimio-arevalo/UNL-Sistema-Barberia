@@ -54,9 +54,6 @@ router.get('/', async (req, res, next) => {
 	});
 });
 
-router.get('/exito', async(req, res, next) => {
-
-});
 
 router.get('/register', (req, res, next) => {
 	res.render('register');
