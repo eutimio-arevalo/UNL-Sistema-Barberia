@@ -54,6 +54,10 @@ router.get('/', async (req, res, next) => {
 	});
 });
 
+router.get('/exito', async(req, res, next) => {
+
+});
+
 router.get('/register', (req, res, next) => {
 	res.render('register');
 });
@@ -184,7 +188,17 @@ router.post('/seleccionar-empleado', isAuthenticated, async (req, res, next) => 
 	newCita.empleado = personaEmpleados[parseInt(btnradio)]._id;
 	await newCita.save();
 
-	res.render('home');
+	const acliente = await Personas.findOne({ usuario: req.user._id })
+	const acitas = await Citas.find({ cliente: acliente._id, estado:"Pendiente"})
+	const acita = acitas[acitas.length-1];
+	const aservicio = await Servicios.findOne({ _id: acita.servicio });
+	const aempleado = await Personas.findOne({ _id: acita.empleado });
+	res.render('exito',{
+		getCliente: acliente,
+		getServicio: aservicio,
+		getEmpleado: aempleado,
+		getCita: acita
+	});
 });
 
 
