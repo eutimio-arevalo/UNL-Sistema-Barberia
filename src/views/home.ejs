@@ -7,8 +7,16 @@
             </div>
         </div>
     </div>
-
-    <div class="row justify-content-center">
+    <div class="row justify-content-center text-center">
+        <div class="col mb-2">
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" height="500" width="1000"
+                    src="https://www.youtube.com/embed/9OCRagJXj5c?autoplay=1&mute=1" frameborder="0"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center mb-4">
         <div class="col-md-8 ">
             <div class="mt-7 text-center">
                 <div class="card-header mt-2">
@@ -19,26 +27,26 @@
                         <% listaTrabajos.forEach(function(trabajo, i) { %>
                             <% if(i==1){ %>
                                 <div class="carousel-item active" data-bs-interval="10000">
-                            <% }else{ %>
-                                <div class="carousel-item" data-bs-interval="2000">
-                            <% } %>    
-                                <img src="<%= trabajo.urlimage %>"
-                                    class="d-block w-100" height="400" alt="<%= i %>">
-                            </div>
-                        <% }); %>
+                                    <% }else{ %>
+                                        <div class="carousel-item" data-bs-interval="2000">
+                                            <% } %>
+                                                <img src="<%= trabajo.urlimage %>" class="d-block w-100" height="400"
+                                                    alt="<%= i %>">
+                                        </div>
+                                        <% }); %>
+                                </div>
+
+                                <button class="carousel-control-prev" type="button"
+                                    data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                    data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
                     </div>
-                    
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
                 </div>
             </div>
         </div>
-    </div>
