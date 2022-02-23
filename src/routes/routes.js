@@ -110,7 +110,7 @@ router.post('/perfil', isAuthenticated, async (req, res, next) => {
 	persona.apellido = apellido;
 	persona.nacimiento = nacimiento;
 	persona.telefono = telefono;
-	if (usuario.tipo == "Admin") {
+	if (usuario.tipo == "Admin" && !(persona.cedula.length > 0)) {
 		persona.cedula = req.body.cedula;
 	}
 	usuario.email = email;
@@ -395,8 +395,12 @@ router.post('/agregar/empleado', isAuthenticated, async (req, res, next) => {
 	const { nombre, apellido, nacimiento, cedula, telefono, email, password, image } = req.body;
 	const user = await Usuarios.findOne({ email: email });
 	const cliente = await Personas.findOne({ cedula: cedula });;
+	var mensajeRegistrar = "";
+	var mensajeCedula = "";
 	if (user || cliente) {
-
+		mensajeRegistrar = "El usuario ya existe"
+	}else if(verificarCedula(cedula)){
+		mensajeCedula = "Cédula no valida";
 	} else {
 		const result = await Cloudinary.v2.uploader.upload(req.file.path);
 		const newPersona = new Personas();
@@ -428,6 +432,8 @@ router.post('/agregar/empleado', isAuthenticated, async (req, res, next) => {
 
 	res.render('admin/empleado', {
 		listaUsers: userEmpleados,
+		mensajeRegistrar: mensajeRegistrar,
+		mensajeCedula: mensajeCedula,
 		listaPersonas: personaEmpleados
 	});
 });
@@ -660,6 +666,37 @@ function isAuthenticated(req, res, next) {
 		return next();
 	}
 	res.redirect('/');
+}
+
+function verificarCedula(cedula) {
+
+	var cad = cedula;
+	var total = 0;
+	var longitud = cad.length;
+	var longcheck = longitud - 1;
+
+	if (cad !== "" && longitud === 10) {
+		for (i = 0; i < longcheck; i++) {
+			if (i % 2 === 0) {
+				var aux = cad.charAt(i) * 2;
+				if (aux > 9) aux -= 9;
+				total += aux;
+			} else {
+				total += parseInt(cad.charAt(i)); // parseInt o concatenará en lugar de sumar
+			}
+		}
+
+		total = total % 10 ? 10 - total % 10 : 0;
+
+		if (cad.charAt(longitud - 1) == total) {
+			console.log("Cedula Válida");
+			return false;
+		} else {
+			console.log("Cedula Inválida");
+			return true;
+		}
+	}
+
 }
 
 module.exports = router;

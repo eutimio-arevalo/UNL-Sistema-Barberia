@@ -12,7 +12,7 @@
                         <%= persona.nombre+" "+persona.apellido %> </span><span
                         class=" text-black-50">
                             <%= user.email %>
-                    </span> <span class="text-black-50">Cedula: <%= persona.cedula%></span><span> <span
+                    </span> <span class="text-black-50">Cédula: <%= persona.cedula%></span><span> <span
                             class="text-black-50">Edad: <%= edad %></span><span></span>
                 </div>
             </div>
@@ -30,12 +30,12 @@
                             <div class="col-md-12"><label class="labels">Fecha de Nacimiento</label><input type="date"
                                     name="nacimiento" class="form-control" value="<%= persona.nacimiento %>"
                                     min="1922-01-01" max="2010-12-31"></div>
-                            <div class="col-md-12"><label class="labels">Telefono</label><input type="tel"
+                            <div class="col-md-12"><label class="labels">Teléfono</label><input type="tel"
                                     name="telefono" class="form-control" value="<%= persona.telefono %>"></div>
                             <div class="col-md-12"><label class="labels">Email</label><input type="text" name="email"
                                     class="form-control" value="<%= user.email %>"></div>
                             <% if(persona.cedula==""){ %>
-                                <div class="col-md-12"><label class="labels">Cedula</label><input type="text" name="cedula"
+                                <div class="col-md-12"><label class="labels">Cédula</label><input type="text" name="cedula"
                                     class="form-control" value="<%= persona.cedula %>"></div>
                             <% } %>
                             
