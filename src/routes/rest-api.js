@@ -98,7 +98,7 @@ router.get('/rest-api/citas/cliente/:id', getPersona, async(req, res) => {
 	}
 });
 
-router.get('/rest-api/citas/pendiente/cliente/:id', getPersona, async(req, res) => {
+router.get('/rest-api/citas/pendientes/cliente/:id', getPersona, async(req, res) => {
 	try {
 		const servicio = await Citas.find({ cliente: res.usuario._id, estado: "Pendiente" });
 		res.json(servicio);
@@ -107,18 +107,18 @@ router.get('/rest-api/citas/pendiente/cliente/:id', getPersona, async(req, res) 
 	}
 });
 
-router.get('/rest-api/citas/finalizado/cliente/:id', getPersona, async(req, res) => {
+router.get('/rest-api/citas/completadas/cliente/:id', getPersona, async(req, res) => {
 	try {
-		const servicio = await Citas.find({ cliente: res.usuario._id, estado: "Finalizado" });
+		const servicio = await Citas.find({ cliente: res.usuario._id, estado: "completada" });
 		res.json(servicio);
 	} catch (err) {
 		res.status(500).json({ message: err.message })
 	}
 });
 
-router.get('/rest-api/citas/cancelado/cliente/:id', getPersona, async(req, res) => {
+router.get('/rest-api/citas/canceladas/cliente/:id', getPersona, async(req, res) => {
 	try {
-		const servicio = await Citas.find({ cliente: res.usuario._id, estado: "Cancelado" });
+		const servicio = await Citas.find({ cliente: res.usuario._id, estado: "Cancelada" });
 		res.json(servicio);
 	} catch (err) {
 		res.status(500).json({ message: err.message })
@@ -134,7 +134,7 @@ router.get('/rest-api/citas/empleado/:id', getPersona, async(req, res) => {
 	}
 });
 
-router.get('/rest-api/citas/pendiente/empleado/:id', getPersona, async(req, res) => {
+router.get('/rest-api/citas/pendientes/empleado/:id', getPersona, async(req, res) => {
 	try {
 		const servicio = await Citas.find({ empleado: res.usuario._id, estado: "Pendiente" });
 		res.json(servicio);
@@ -143,18 +143,18 @@ router.get('/rest-api/citas/pendiente/empleado/:id', getPersona, async(req, res)
 	}
 });
 
-router.get('/rest-api/citas/finalizado/empleado/:id', getPersona, async(req, res) => {
+router.get('/rest-api/citas/completadas/empleado/:id', getPersona, async(req, res) => {
 	try {
-		const servicio = await Citas.find({ empleado: res.usuario._id, estado: "Finalizado" });
+		const servicio = await Citas.find({ empleado: res.usuario._id, estado: "Completada" });
 		res.json(servicio);
 	} catch (err) {
 		res.status(500).json({ message: err.message })
 	}
 });
 
-router.get('/rest-api/citas/cancelado/empleado/:id', getPersona, async(req, res) => {
+router.get('/rest-api/citas/canceladas/empleado/:id', getPersona, async(req, res) => {
 	try {
-		const servicio = await Citas.find({ empleado: res.usuario._id, estado: "Cancelado" });
+		const servicio = await Citas.find({ empleado: res.usuario._id, estado: "Cancelada" });
 		res.json(servicio);
 	} catch (err) {
 		res.status(500).json({ message: err.message })

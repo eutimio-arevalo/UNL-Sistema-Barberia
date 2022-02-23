@@ -268,7 +268,7 @@ router.post('/historial/cancelar', isAuthenticated, async (req, res, next) => {
 	//console.log(posicion)
 
 	//console.log("No se elimina")
-	citas[posicion].estado = "Cancelado";
+	citas[posicion].estado = "Cancelada";
 	await citas[posicion].save();
 
 
