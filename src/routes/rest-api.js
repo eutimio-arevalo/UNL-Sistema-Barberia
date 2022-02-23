@@ -215,14 +215,14 @@ router.post('/rest-api/citas', async (req, res) => {
 
 
 //Actualizar uno
-router.patch('/rest-api/citas/:id', getCita, async (req, res) => {
+router.post('/rest-api/citas/:id', getCita, async (req, res) => {
 	console.log(res.usuario)
 	if (req.body.estado != null) {
 		res.usuario.estado = req.body.estado;
 	}
 	try {
 		const updateUsuario = await res.usuario.save();
-		res.json(updateUsuario)
+		res.status(200).send(updateUsuario);
 	} catch (error) {
 		res.status(400).json({ message: error.message });
 	}
